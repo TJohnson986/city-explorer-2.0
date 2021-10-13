@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +21,12 @@ class App extends React.Component {
 
   handleFormSubmit = async (event) => {
     event.preventDefault();
+    this.getLocationData();
+    this.getWeatherData();
+    this.getMovieData();
+  };
+
+  getLocationData = async () => {
     try {
       let cityData = await axios.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_KEY}&q=${this.state.city}&format=json`)
       let wantedCity = cityData.data[0];
@@ -28,11 +36,33 @@ class App extends React.Component {
     } catch (err) {
       this.setState({ error: `${err.message}: ${err.response.data.error}`});
     }
-    this.getWeatherData();
-    this.getMovieData();
-  };
+  }
 
-  
+  getWeatherData = async () => {
+    try {
+      const weatherData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/weather?lat=${this.state.cityData.lat}&lon=${this.state.cityData.lon}`)
+      this.setState({
+        weatherData: weatherData.data
+      })
+    } catch(err){
+      this.setState({ error: `${err.message}: ${err.response.data.error}`})
+    }
+  }
+
+  getMovieData = async () => {
+    try {
+      const movieData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/movies`, {
+        params: {
+          city: this.state.city,
+        }
+      });
+      this.setState({
+        movieData: movieData.data,
+      })
+    } catch(err){
+      this.setState({ error: `${err.message}: ${err.response.data.error}`});
+    }
+  }
 
   render() {
     return (
