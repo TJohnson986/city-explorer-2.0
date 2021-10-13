@@ -1,3 +1,6 @@
+# City Explorer 2.0
+A React app with 3rd party API to enter a city name and return facts about that city. 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
