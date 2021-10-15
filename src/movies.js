@@ -13,7 +13,7 @@ class Movies extends React.Component {
         const allListGroups = this.props.movieData.map((info, index) => (
             <SingleMovie key={index} title={info.title} overview={info.overview} />
         ))
-
+        
         return (
             <ListGroup>
                 {allListGroups}
